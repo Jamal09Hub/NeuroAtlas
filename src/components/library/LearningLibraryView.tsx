@@ -10,7 +10,6 @@ import {
   Compass,
   Folder,
   FolderTree,
-  Highlighter,
   Layers,
   Menu,
   PanelLeftClose,
@@ -50,25 +49,21 @@ interface LearningLibraryViewProps {
   onOpenQuickFind: () => void;
 }
 
-function renderFormattedBullet(text: string, highYield: boolean) {
+function renderFormattedBullet(text: string) {
   const colonIdx = text.indexOf(':');
   if (colonIdx > 0 && colonIdx <= 48) {
     const lead = text.slice(0, colonIdx + 1);
     const rest = text.slice(colonIdx + 1);
     return (
       <>
-        <strong
-          className={`font-semibold text-[#0F172A] ${
-            highYield ? 'bg-[#FEF3C7] px-1 py-0.5 rounded-[3px] amboss-term' : 'amboss-term'
-          }`}
-        >
+        <strong className="font-semibold text-[#0F172A] amboss-term">
           {lead}
         </strong>
-        <span className={highYield ? 'text-[#334155]' : 'text-[#1E293B]'}>{rest}</span>
+        <span className="text-[#1E293B]">{rest}</span>
       </>
     );
   }
-  return <span className={highYield ? 'text-[#475569]' : 'text-[#1E293B]'}>{text}</span>;
+  return <span className="text-[#1E293B]">{text}</span>;
 }
 
 export function LearningLibraryView({
@@ -87,7 +82,6 @@ export function LearningLibraryView({
 }: LearningLibraryViewProps) {
   const [railTab, setRailTab] = useState<'outline' | 'curriculum'>('outline');
   const [railOpen, setRailOpen] = useState(true);
-  const [highYieldMode, setHighYieldMode] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [moduleFilterId, setModuleFilterId] = useState<string>('all');
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
@@ -143,18 +137,6 @@ export function LearningLibraryView({
 
   const toggleSection = (secKey: string) => {
     setCollapsedSections((prev) => ({ ...prev, [secKey]: !prev[secKey] }));
-  };
-
-  const allSectionsCollapsed = activeLecture.sections.every(
-    (_, idx) => collapsedSections[`${activeLecture.id}-${idx}`]
-  );
-
-  const toggleAllSections = () => {
-    const nextState: Record<string, boolean> = {};
-    activeLecture.sections.forEach((_, idx) => {
-      nextState[`${activeLecture.id}-${idx}`] = !allSectionsCollapsed;
-    });
-    setCollapsedSections(nextState);
   };
 
   const scrollToAnchor = (anchorId: string) => {
@@ -565,56 +547,30 @@ export function LearningLibraryView({
               </div>
 
               {/* AMBOSS Article Toolbar Row */}
-              <div className="flex flex-wrap items-center justify-between gap-2">
-                <div className="flex flex-wrap items-center gap-2">
-                  <button
-                    type="button"
-                    onClick={() =>
-                      onStartLectureQuiz([activeLecture.id], activeLecture.title)
-                    }
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-[#DCE3E8] bg-white hover:bg-[#F6F8FA] text-xs font-semibold text-[#0B3A45] whitespace-nowrap shrink-0"
-                  >
-                    <Play className="w-3.5 h-3.5 text-[#126D7C]" />
-                    <span>QBank (4 Questions)</span>
-                  </button>
+              <div className="flex flex-wrap items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() =>
+                    onStartLectureQuiz([activeLecture.id], activeLecture.title)
+                  }
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-[#DCE3E8] bg-white hover:bg-[#F6F8FA] text-xs font-semibold text-[#0B3A45] whitespace-nowrap shrink-0"
+                >
+                  <Play className="w-3.5 h-3.5 text-[#126D7C]" />
+                  <span>QBank (4 Questions)</span>
+                </button>
 
-                  <button
-                    type="button"
-                    onClick={() => onToggleReviewed(activeLecture.id)}
-                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md border text-xs font-semibold transition-colors whitespace-nowrap shrink-0 ${
-                      isReviewed
-                        ? 'bg-emerald-50 border-emerald-300 text-emerald-800'
-                        : 'bg-white border-[#DCE3E8] text-[#334155] hover:bg-[#F6F8FA]'
-                    }`}
-                  >
-                    <CheckCircle2 className="w-3.5 h-3.5" />
-                    <span>{isReviewed ? 'Reviewed' : 'Mark Reviewed'}</span>
-                  </button>
-                </div>
-
-                <div className="flex items-center gap-2">
-                  <button
-                    type="button"
-                    onClick={() => setHighYieldMode((v) => !v)}
-                    aria-pressed={highYieldMode}
-                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md border text-xs font-semibold transition-colors whitespace-nowrap shrink-0 ${
-                      highYieldMode
-                        ? 'bg-[#FEF3C7] border-[#D97706] text-[#92400E]'
-                        : 'bg-white border-[#DCE3E8] text-[#475569] hover:bg-[#F6F8FA]'
-                    }`}
-                  >
-                    <Highlighter className="w-3.5 h-3.5" />
-                    <span>{highYieldMode ? 'High-Yield On' : 'High-Yield Off'}</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={toggleAllSections}
-                    className="hidden sm:inline-flex items-center gap-1 px-2.5 py-1.5 rounded-md border border-[#DCE3E8] bg-white hover:bg-[#F6F8FA] text-xs font-medium text-[#475569] whitespace-nowrap shrink-0"
-                  >
-                    {allSectionsCollapsed ? 'Expand All' : 'Collapse All'}
-                  </button>
-                </div>
+                <button
+                  type="button"
+                  onClick={() => onToggleReviewed(activeLecture.id)}
+                  className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md border text-xs font-semibold transition-colors whitespace-nowrap shrink-0 ${
+                    isReviewed
+                      ? 'bg-emerald-50 border-emerald-300 text-emerald-800'
+                      : 'bg-white border-[#DCE3E8] text-[#334155] hover:bg-[#F6F8FA]'
+                  }`}
+                >
+                  <CheckCircle2 className="w-3.5 h-3.5" />
+                  <span>{isReviewed ? 'Reviewed' : 'Mark Reviewed'}</span>
+                </button>
               </div>
             </div>
 
@@ -691,11 +647,7 @@ export function LearningLibraryView({
                       {!isCollapsed && (
                         <div className="pt-3.5 px-1 sm:px-2 space-y-3">
                           {sec.summary && (
-                            <p
-                              className={`text-sm leading-relaxed ${
-                                highYieldMode ? 'text-[#64748B]' : 'text-[#334155]'
-                              }`}
-                            >
+                            <p className="text-sm leading-relaxed text-[#334155]">
                               {sec.summary}
                             </p>
                           )}
@@ -704,7 +656,7 @@ export function LearningLibraryView({
                             {sec.bullets.map((bullet, bIdx) => (
                               <li key={bIdx} className="flex items-start gap-2.5">
                                 <span className="mt-2 w-1.5 h-1.5 rounded-full bg-[#126D7C] shrink-0" />
-                                <div>{renderFormattedBullet(bullet, highYieldMode)}</div>
+                                <div>{renderFormattedBullet(bullet)}</div>
                               </li>
                             ))}
                           </ul>
@@ -712,8 +664,6 @@ export function LearningLibraryView({
                           {sec.callout && (
                             <div
                               className={`mt-3 p-3.5 rounded-md border text-xs leading-relaxed ${
-                                highYieldMode ? 'ring-1 ring-[#D97706]/50 ' : ''
-                              }${
                                 sec.callout.variant === 'warning'
                                   ? 'bg-[#FEF2F2] border-[#FECACA] text-[#7F1D1D]'
                                   : sec.callout.variant === 'localisation'
@@ -795,11 +745,7 @@ export function LearningLibraryView({
               {/* High-Yield Exam Pearls */}
               <section
                 id="article-pearls"
-                className={`rounded-md border p-4 space-y-2 ${
-                  highYieldMode
-                    ? 'bg-[#FEF3C7] border-[#D97706] text-[#78350F]'
-                    : 'bg-[#FFFDF5] border-[#E8D5A3] text-[#78350F]'
-                }`}
+                className="rounded-md border p-4 space-y-2 bg-[#FFFDF5] border-[#E8D5A3] text-[#78350F]"
               >
                 <div className="flex items-center gap-2 font-bold text-sm text-[#92400E]">
                   <Sparkles className="w-4 h-4 text-[#D97706]" />
