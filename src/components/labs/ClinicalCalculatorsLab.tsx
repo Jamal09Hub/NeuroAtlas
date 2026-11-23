@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { AlertTriangle, Calculator, FlaskConical } from 'lucide-react';
 import {
+  AnnotatedPlate,
   DiagramPin,
   DiagramStudyFrame,
-  MedicalSvgDefs,
   PinOrLabel,
 } from './DiagramPrimitives';
+import csfVentriclesImg from '../../assets/images/csf_ventricles_sagittal_1795394579691.jpg';
 
 // ============================================================================
 // 9. VENTRICULAR SYSTEM, CSF FLOW (OSMOSIS-INSPIRED) & CSF DIAGNOSTIC MATRIX
@@ -106,11 +107,11 @@ const CSF_PROFILES: Record<
 };
 
 const CSF_PINS: DiagramPin[] = [
-  { id: 'granulations', num: 1, label: 'Arachnoid Granulations', detail: 'Absorb CSF from subarachnoid space into Superior Sagittal Sinus', x: 174, y: 31, labelX: 72, labelY: 18 },
-  { id: 'choroid', num: 2, label: 'Choroid Plexus', detail: 'Modified ependymal cells secreting ~500 mL/day CSF', x: 182, y: 92, labelX: 36, labelY: 64 },
-  { id: 'foramen-monro', num: 3, label: 'Foramen of Monro', detail: 'Connects lateral ventricles to midline 3rd ventricle', x: 204, y: 112, labelX: 298, labelY: 46 },
-  { id: 'aqueduct', num: 4, label: 'Cerebral Aqueduct', detail: 'Narrow midbrain channel (commonest site of obstructive hydrocephalus)', x: 178, y: 144, labelX: 298, labelY: 112 },
-  { id: 'fourth-vent', num: 5, label: '4th Ventricle & Cisterns', detail: 'Exits via median (Magendie) & lateral (Luschka) apertures to cisterns', x: 162, y: 174, labelX: 44, labelY: 222 },
+  { id: 'granulations', num: 1, label: 'Arachnoid Granulations', detail: 'Absorb CSF from subarachnoid space into Superior Sagittal Sinus', x: 825, y: 192, labelX: 875, labelY: 92 },
+  { id: 'choroid', num: 2, label: 'Choroid Plexus', detail: 'Modified ependymal cells secreting ~500 mL/day CSF', x: 642, y: 342, labelX: 910, labelY: 222 },
+  { id: 'foramen-monro', num: 3, label: 'Foramen of Monro', detail: 'Connects lateral ventricles to midline 3rd ventricle', x: 556, y: 432, labelX: 912, labelY: 360 },
+  { id: 'aqueduct', num: 4, label: 'Cerebral Aqueduct', detail: 'Narrow midbrain channel (commonest site of obstructive hydrocephalus)', x: 662, y: 514, labelX: 905, labelY: 508 },
+  { id: 'fourth-vent', num: 5, label: '4th Ventricle & Cisterns', detail: 'Exits via median (Magendie) & lateral (Luschka) apertures to cisterns', x: 664, y: 588, labelX: 875, labelY: 685 },
 ];
 
 export function CsfMatrixLab() {
@@ -170,108 +171,29 @@ export function CsfMatrixLab() {
       {tab === 'ventricles' ? (
         <div className="grid grid-cols-1 lg:grid-cols-12">
           <div className="lg:col-span-7 p-4 bg-white border-b lg:border-b-0 lg:border-r border-[#DCE3E8] flex items-center justify-center">
-            <svg
-              viewBox="-75 0 485 255"
-              className="w-full max-w-[480px] h-auto select-none"
-              role="img"
-              aria-label="Midsagittal skull and brain showing lateral, 3rd, and 4th ventricles, cerebral aqueduct, choroid plexus, arachnoid granulations, and CSF circulation"
+            <AnnotatedPlate
+              src={csfVentriclesImg}
+              alt="Midsagittal skull and brain showing lateral, 3rd, and 4th ventricles, cerebral aqueduct, choroid plexus, arachnoid granulations, and CSF circulation"
+              width={1200}
+              height={896}
+              maxWidthClass="max-w-[500px]"
             >
-              <MedicalSvgDefs prefix="csf" />
-              {/* Outer Skull Calvarium */}
-              <path
-                d="M 46 140 C 32 76 86 18 178 16 C 272 16 334 62 330 132 C 326 168 296 178 274 176 L 266 196 L 234 196 L 222 178 L 194 238 L 136 238 L 138 206 C 98 204 58 182 46 140 Z"
-                fill="url(#csf-skull-bone)"
-                stroke="#B8A37E"
-                strokeWidth="1.6"
-              />
-              {/* Dural Venous Sinus (Superior Sagittal Sinus - Indigo) */}
-              <path
-                d="M 56 134 C 46 78 96 28 178 26 C 260 26 318 68 318 128 C 316 144 304 156 286 158 L 284 146 C 300 144 304 132 304 126 C 304 74 250 38 178 38 C 106 38 60 84 68 134 Z"
-                fill="url(#csf-venous-sinus)"
-                stroke="#4F46E5"
-                strokeWidth="1"
-              />
-              {/* Subarachnoid Space (Aqua CSF envelope) */}
-              <path
-                d="M 64 134 C 58 84 102 36 178 36 C 254 36 306 74 306 128 C 306 148 286 162 254 166 L 196 188 L 186 236 L 146 236 L 146 192 C 102 192 70 168 64 134 Z"
-                fill="url(#csf-csf-aqua)"
-              />
-              {/* Arachnoid Granulations protruding into SSS */}
-              {[136, 174, 214, 248].map((x) => (
-                <circle key={x} cx={x} cy="33" r="4.5" fill="#7DD3FC" stroke="#0284C7" strokeWidth="1" />
-              ))}
-
-              {/* Cerebral Cortex Midsagittal Section + Gyri */}
-              <path
-                d="M 76 132 C 72 88 112 44 178 44 C 248 44 294 80 294 126 C 294 144 268 156 236 154 L 210 144 L 146 144 L 116 152 C 92 152 78 144 76 132 Z"
-                fill="url(#csf-cortex-pink)"
-                stroke="#B87E7D"
-                strokeWidth="1.4"
-              />
-              {/* Corpus Callosum Arch */}
-              <path
-                d="M 122 108 Q 168 68 238 96 Q 244 106 232 108 Q 172 84 130 112 Z"
-                fill="url(#csf-white-matter)"
-                stroke="#C58E8C"
-                strokeWidth="1.2"
-              />
-              {/* Cerebellum & Brainstem */}
-              <path
-                d="M 88 154 C 76 172 96 202 134 198 C 148 196 156 180 152 158 Z"
-                fill="url(#csf-gray-matter)"
-                stroke="#9F6564"
-                strokeWidth="1.2"
-              />
-              <path
-                d="M 152 136 L 186 136 Q 198 156 184 176 L 176 236 L 154 236 L 156 186 Q 146 160 152 136 Z"
-                fill="#F4D7D6"
-                stroke="#B68285"
-                strokeWidth="1.2"
-              />
-
-              {/* Ventricular System (Lateral + 3rd + Aqueduct + 4th) */}
-              <path
-                d={
-                  hydrocephalus === 'obstructive'
-                    ? 'M 130 106 Q 172 78 232 100 Q 214 124 196 124 L 182 140 L 176 144'
-                    : 'M 136 106 Q 172 86 226 102 Q 210 118 196 118 L 182 138 L 166 168 L 160 194'
-                }
-                fill="none"
-                stroke="#0284C7"
-                strokeWidth={hydrocephalus === 'obstructive' ? '12' : '7'}
-                strokeLinecap="round"
-                opacity="0.78"
-              />
-              {/* Choroid Plexus in Lateral Ventricle */}
-              <path
-                d="M 152 98 Q 174 88 202 96"
-                fill="none"
-                stroke="#DC2626"
-                strokeWidth="3.5"
-                strokeDasharray="3 2"
-              />
-
-              {/* Aqueductal Stenosis Blockade Marker */}
+              {/* Obstructive Hydrocephalus Halo + Aqueductal Stenosis Blockade Marker */}
               {hydrocephalus === 'obstructive' && (
                 <g>
-                  <circle cx="177" cy="144" r="7" fill="#DC2626" />
-                  <line x1="173" y1="140" x2="181" y2="148" stroke="#FFFFFF" strokeWidth="2" />
-                  <line x1="181" y1="140" x2="173" y2="148" stroke="#FFFFFF" strokeWidth="2" />
+                  <path
+                    d="M 520 355 Q 645 275 795 395 Q 725 465 565 445 Z"
+                    fill="#0284C7"
+                    fillOpacity={0.32}
+                    stroke="#DC2626"
+                    strokeWidth={5}
+                    strokeDasharray="10 6"
+                  />
+                  <circle cx={662} cy={514} r={24} fill="#DC2626" stroke="#FFFFFF" strokeWidth={4} />
+                  <line x1={649} y1={501} x2={675} y2={527} stroke="#FFFFFF" strokeWidth={6} strokeLinecap="round" />
+                  <line x1={675} y1={501} x2={649} y2={527} stroke="#FFFFFF" strokeWidth={6} strokeLinecap="round" />
                 </g>
               )}
-
-              {/* CSF Flow Arrows */}
-              <path d="M 164 196 Q 158 214 156 230" fill="none" stroke="#0B3A45" strokeWidth="1.5" markerEnd="url(#csf-arrow-teal)" />
-              <path d="M 116 48 Q 146 38 170 38" fill="none" stroke="#0B3A45" strokeWidth="1.5" markerEnd="url(#csf-arrow-teal)" />
-
-              {/* Choroid Plexus Zoom Inset (Osmosis style Fig 4C) */}
-              <g transform="translate(292, 168)">
-                <rect x="0" y="0" width="80" height="72" rx="4" fill="#E0F2FE" stroke="#64748B" strokeWidth="1.2" />
-                <path d="M 8 56 Q 22 14 34 44 Q 46 14 58 44 Q 68 18 74 56" fill="#FCA5A5" stroke="#B91C1C" strokeWidth="1.6" />
-                <text x="40" y="66" textAnchor="middle" className="fill-[#0B3A45] text-[7.5px] font-bold">
-                  Choroid Ependyma
-                </text>
-              </g>
 
               {CSF_PINS.map((pin) => (
                 <PinOrLabel
@@ -280,11 +202,12 @@ export function CsfMatrixLab() {
                   quizMode={quizMode}
                   isRevealed={revealedIds.includes(pin.id)}
                   onReveal={toggleReveal}
-                  anchor={(pin.labelX ?? pin.x) > 190 ? 'start' : 'end'}
-                  fontSize={7.8}
+                  anchor="start"
+                  fontSize={22}
+                  pinRadius={20}
                 />
               ))}
-            </svg>
+            </AnnotatedPlate>
           </div>
 
           <div className="lg:col-span-5 p-4 bg-[#FAFCFD] space-y-3 text-xs">

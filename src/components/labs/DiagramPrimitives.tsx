@@ -311,6 +311,7 @@ export function PinOrLabel({
   dx = 0,
   dy = 0,
   fontSize = 9.5,
+  pinRadius = 9.5,
 }: {
   pin: DiagramPin;
   quizMode: boolean;
@@ -320,7 +321,10 @@ export function PinOrLabel({
   dx?: number;
   dy?: number;
   fontSize?: number;
+  pinRadius?: number;
 }) {
+  const scale = pinRadius / 9.5;
+
   if (!quizMode) {
     const tx = pin.labelX ?? pin.x + dx;
     const ty = pin.labelY ?? pin.y + dy;
@@ -332,12 +336,29 @@ export function PinOrLabel({
             <line
               x1={pin.x}
               y1={pin.y}
-              x2={tx + (anchor === 'end' ? 3 : anchor === 'start' ? -3 : 0)}
-              y2={ty - 3}
-              stroke="#64748B"
-              strokeWidth="0.9"
+              x2={tx + (anchor === 'end' ? 6 * scale : anchor === 'start' ? -6 * scale : 0)}
+              y2={ty - 4 * scale}
+              stroke="#FFFFFF"
+              strokeWidth={3.2 * scale}
+              strokeLinecap="round"
             />
-            <circle cx={pin.x} cy={pin.y} r="2.2" fill="#0B3A45" stroke="#FFFFFF" strokeWidth="0.7" />
+            <line
+              x1={pin.x}
+              y1={pin.y}
+              x2={tx + (anchor === 'end' ? 6 * scale : anchor === 'start' ? -6 * scale : 0)}
+              y2={ty - 4 * scale}
+              stroke="#334155"
+              strokeWidth={1.35 * scale}
+              strokeLinecap="round"
+            />
+            <circle
+              cx={pin.x}
+              cy={pin.y}
+              r={3.2 * scale}
+              fill="#0B3A45"
+              stroke="#FFFFFF"
+              strokeWidth={1.2 * scale}
+            />
           </>
         )}
         <text
@@ -348,7 +369,7 @@ export function PinOrLabel({
             fontSize: `${fontSize}px`,
             paintOrder: 'stroke',
             stroke: '#FFFFFF',
-            strokeWidth: '3.4px',
+            strokeWidth: `${4.2 * scale}px`,
             strokeLinejoin: 'round',
           }}
           className="fill-[#0F172A] font-semibold"
@@ -370,34 +391,36 @@ export function PinOrLabel({
       <circle
         cx={pin.x}
         cy={pin.y}
-        r="9.5"
+        r={pinRadius}
         fill={isRevealed ? '#059669' : '#0B3A45'}
         stroke="#FFFFFF"
-        strokeWidth="1.5"
+        strokeWidth={1.9 * scale}
       />
       <text
         x={pin.x}
-        y={pin.y + 3.2}
+        y={pin.y + 3.4 * scale}
         textAnchor="middle"
-        className="fill-white text-[9px] font-mono font-bold select-none"
+        style={{ fontSize: `${9.5 * scale}px` }}
+        className="fill-white font-mono font-bold select-none"
       >
         {pin.num}
       </text>
       {isRevealed && (
         <g
-          transform={`translate(${pin.x + (anchor === 'end' ? -13 : anchor === 'start' ? 13 : 0)}, ${
-            pin.y + (anchor === 'middle' ? -14 : 3.5)
-          })`}
+          transform={`translate(${
+            pin.x + (anchor === 'end' ? -13 * scale : anchor === 'start' ? 13 * scale : 0)
+          }, ${pin.y + (anchor === 'middle' ? -14 * scale : 3.5 * scale)})`}
         >
           <text
             textAnchor={anchor}
             style={{
+              fontSize: `${fontSize}px`,
               paintOrder: 'stroke',
               stroke: '#FFFFFF',
-              strokeWidth: '3.2px',
+              strokeWidth: `${4 * scale}px`,
               strokeLinejoin: 'round',
             }}
-            className="fill-[#065F46] text-[9px] font-bold select-none"
+            className="fill-[#065F46] font-bold select-none"
           >
             {pin.label}
           </text>
@@ -406,3 +429,46 @@ export function PinOrLabel({
     </g>
   );
 }
+
+/**
+ * Renders a high-resolution unlabeled medical illustration plate with a calibrated
+ * SVG overlay for leader-line callouts, Self-Test Pins, and dynamic lesion highlights.
+ */
+export function AnnotatedPlate({
+  src,
+  alt,
+  width,
+  height,
+  maxWidthClass = 'max-w-[500px]',
+  children,
+}: {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+  maxWidthClass?: string;
+  children?: React.ReactNode;
+}) {
+  return (
+    <div className={`relative w-full ${maxWidthClass} mx-auto`}>
+      <img
+        src={src}
+        alt={alt}
+        width={width}
+        height={height}
+        referrerPolicy="no-referrer"
+        className="w-full h-auto block select-none rounded-sm"
+      />
+      {children && (
+        <svg
+          viewBox={`0 0 ${width} ${height}`}
+          className="absolute inset-0 w-full h-full overflow-visible select-none"
+          aria-hidden="true"
+        >
+          {children}
+        </svg>
+      )}
+    </div>
+  );
+}
+

@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import { AlertTriangle, CheckCircle2, Eye, RotateCcw } from 'lucide-react';
 import {
+  AnnotatedPlate,
   DiagramPin,
   DiagramStudyFrame,
   MedicalSvgDefs,
   PinOrLabel,
 } from './DiagramPrimitives';
+import visualPathwayImg from '../../assets/images/visual_pathway_base_1795394579996.jpg';
+import spinalCordImg from '../../assets/images/spinal_cord_section_1795394579672.jpg';
 
 // ============================================================================
 // 1. VISUAL PATHWAY & GOLDMANN PERIMETRY LESION LOCALIZER
@@ -94,12 +97,12 @@ const VISUAL_LESIONS: Record<VisualLesionSite, VisualLesionSpec> = {
 };
 
 const VISUAL_PINS: DiagramPin[] = [
-  { id: 'optic-nerve', num: 1, label: 'Optic Nerve (CN II)', detail: 'Pre-chiasmal axons from both nasal and temporal hemiretinas', x: 146, y: 72 },
-  { id: 'chiasm', num: 2, label: 'Optic Chiasm', detail: 'Nasal retinal fibres decussate here above pituitary fossa', x: 220, y: 112 },
-  { id: 'optic-tract', num: 3, label: 'Optic Tract', detail: 'Carries contralateral visual hemifield to LGN & pretectal nucleus', x: 156, y: 142 },
-  { id: 'lgn', num: 4, label: 'Lateral Geniculate Nucleus (LGN)', detail: 'Thalamic 6-layer relay nucleus (pupillary fibres exit before LGN)', x: 132, y: 176 },
-  { id: 'meyer', num: 5, label: 'Meyer’s Loop (Temporal Radiation)', detail: 'Loops anteriorly around temporal horn; carries superior visual quadrant', x: 102, y: 212 },
-  { id: 'occipital', num: 6, label: 'Calcarine Occipital Cortex (V1)', detail: 'Primary visual cortex; macular pole receives dual PCA + MCA supply', x: 280, y: 274 },
+  { id: 'optic-nerve', num: 1, label: 'Optic Nerve (II)', detail: 'Pre-chiasmal axons from both nasal and temporal hemiretinas', x: 705, y: 225, labelX: 925, labelY: 168 },
+  { id: 'chiasm', num: 2, label: 'Optic Chiasm', detail: 'Nasal retinal fibres decussate here above pituitary fossa', x: 600, y: 325, labelX: 925, labelY: 305 },
+  { id: 'optic-tract', num: 3, label: 'Optic Tract', detail: 'Carries contralateral visual hemifield to LGN & pretectal nucleus', x: 525, y: 425, labelX: 245, labelY: 395 },
+  { id: 'lgn', num: 4, label: 'LGN (Thalamus)', detail: 'Thalamic 6-layer relay nucleus (pupillary fibres exit before LGN)', x: 465, y: 515, labelX: 235, labelY: 505 },
+  { id: 'meyer', num: 5, label: 'Meyer’s Loop', detail: 'Loops anteriorly around temporal horn; carries superior visual quadrant', x: 395, y: 590, labelX: 235, labelY: 625 },
+  { id: 'occipital', num: 6, label: 'Calcarine Cortex (V1)', detail: 'Primary visual cortex; macular pole receives dual PCA + MCA supply', x: 515, y: 815, labelX: 255, labelY: 825 },
 ];
 
 function GoldmannPerimetryCircle({
@@ -199,129 +202,29 @@ export function VisualPathwayLab() {
       }
     >
       <div className="grid grid-cols-1 lg:grid-cols-12">
-        <div className="lg:col-span-7 p-4 bg-white border-b lg:border-b-0 lg:border-r border-[#DCE3E8] flex flex-col items-center">
-          <svg
-            viewBox="0 0 440 310"
-            className="w-full max-w-[470px] h-auto select-none"
-            role="img"
-            aria-label="Anatomical axial brain base showing optic nerve, chiasm, LGN, Meyer's loop, optic radiations, and calcarine cortex"
+        <div className="lg:col-span-7 p-4 bg-white border-b lg:border-b-0 lg:border-r border-[#DCE3E8] flex flex-col items-center justify-center">
+          <AnnotatedPlate
+            src={visualPathwayImg}
+            alt="Anatomical axial brain base showing optic nerve, chiasm, LGN, Meyer's loop, optic radiations, and calcarine cortex"
+            width={1200}
+            height={896}
+            maxWidthClass="max-w-[500px]"
           >
-            <MedicalSvgDefs prefix="vis" />
-
-            {/* Axial Brain Silhouette with Lobes & Gyri Contours */}
-            <path
-              d="M 220 72 C 185 70 142 82 114 114 C 84 146 72 190 82 232 C 92 270 132 294 182 292 C 202 291 214 282 220 272 C 226 282 238 291 258 292 C 308 294 348 270 358 232 C 368 190 356 146 326 114 C 298 82 255 70 220 72 Z"
-              fill="url(#vis-brain-blush)"
-              stroke="#C59C9E"
-              strokeWidth="1.5"
-              filter="url(#vis-soft-shadow)"
-            />
-            {/* Longitudinal fissure & gyral sulci folds */}
-            <line x1="220" y1="72" x2="220" y2="104" stroke="#B68285" strokeWidth="1.3" />
-            <line x1="220" y1="196" x2="220" y2="274" stroke="#B68285" strokeWidth="1.3" />
-            <path d="M 105 152 Q 130 140 148 152 M 96 196 Q 116 184 134 198 M 116 254 Q 146 240 166 256" fill="none" stroke="#CFA5A7" strokeWidth="1.1" />
-            <path d="M 335 152 Q 310 140 292 152 M 344 196 Q 324 184 306 198 M 324 254 Q 294 240 274 256" fill="none" stroke="#CFA5A7" strokeWidth="1.1" />
-
-            {/* Midbrain Cross-Section Landmark (Center) */}
-            <path
-              d="M 192 146 Q 220 136 248 146 Q 256 168 242 184 Q 220 192 198 184 Q 184 168 192 146 Z"
-              fill="#E5C0BF"
-              stroke="#B68285"
-              strokeWidth="1.2"
-            />
-            <circle cx="208" cy="162" r="5" fill="#C58E8C" />
-            <circle cx="232" cy="162" r="5" fill="#C58E8C" />
-
-            {/* Anatomical Left & Right Eyeballs (Sclera, Lens, Iris, Nasal/Temporal Retina) */}
-            {[
-              { cx: 148, label: 'LEFT EYE', temporalLeft: true },
-              { cx: 292, label: 'RIGHT EYE', temporalLeft: false },
-            ].map((eye) => (
-              <g key={eye.label}>
-                <circle cx={eye.cx} cy="40" r="24" fill="#FFFFFF" stroke="#475569" strokeWidth="1.6" filter="url(#vis-soft-shadow)" />
-                {/* Corneal bulge & lens */}
-                <path d={`M ${eye.cx - 12} 19 Q ${eye.cx} 11 ${eye.cx + 12} 19`} fill="#E0F2FE" stroke="#475569" strokeWidth="1.3" />
-                <ellipse cx={eye.cx} cy="25" rx="9" ry="3.5" fill="#BAE6FD" stroke="#0284C7" strokeWidth="0.9" />
-                {/* Temporal retina arc (Teal) */}
-                <path
-                  d={eye.temporalLeft ? `M ${eye.cx} 62 A 22 22 0 0 1 ${eye.cx - 21} 36` : `M ${eye.cx} 62 A 22 22 0 0 0 ${eye.cx + 21} 36`}
-                  fill="none"
-                  stroke="#0F766E"
-                  strokeWidth="4"
-                  strokeLinecap="round"
-                />
-                {/* Nasal retina arc (Amber) */}
-                <path
-                  d={eye.temporalLeft ? `M ${eye.cx} 62 A 22 22 0 0 0 ${eye.cx + 21} 36` : `M ${eye.cx} 62 A 22 22 0 0 1 ${eye.cx - 21} 36`}
-                  fill="none"
-                  stroke="#D97706"
-                  strokeWidth="4"
-                  strokeLinecap="round"
-                />
-                <text x={eye.cx} y="9" textAnchor="middle" className="fill-[#334155] text-[9px] font-bold">
-                  {eye.label}
-                </text>
-              </g>
-            ))}
-
-            {/* Temporal Fibres (Teal - Stay Ipsilateral) */}
-            <path
-              d="M 129 44 Q 134 94 196 116 L 140 176 Q 112 222 152 276"
-              fill="none"
-              stroke={selected === 'left-occipital' || selected === 'left-optic-tract' ? '#94A3B8' : '#0F766E'}
-              strokeWidth="3"
-              strokeDasharray={selected === 'left-occipital' || selected === 'left-optic-tract' ? '4 3' : undefined}
-            />
-            <path
-              d="M 311 44 Q 306 94 244 116 L 300 176 Q 328 222 288 276"
-              fill="none"
-              stroke={selected === 'right-optic-nerve' ? '#94A3B8' : '#0F766E'}
-              strokeWidth="3"
-              strokeDasharray={selected === 'right-optic-nerve' ? '4 3' : undefined}
-            />
-            {/* Meyer's Loop Anterior Temporal Detour (Left Side) */}
-            <path
-              d="M 140 176 Q 90 198 110 238 Q 128 264 152 276"
-              fill="none"
-              stroke={selected === 'left-meyer-loop' ? '#DC2626' : '#0F766E'}
-              strokeWidth={selected === 'left-meyer-loop' ? '3.5' : '2.2'}
-              strokeDasharray={selected === 'left-meyer-loop' ? '5 3' : undefined}
-            />
-
-            {/* Nasal Fibres (Amber - Cross at Optic Chiasm) */}
-            <path
-              d="M 167 44 Q 178 94 220 116 L 298 176 Q 318 220 278 276"
-              fill="none"
-              stroke={selected === 'optic-chiasm' ? '#94A3B8' : '#D97706'}
-              strokeWidth="3"
-              strokeDasharray={selected === 'optic-chiasm' ? '4 3' : undefined}
-            />
-            <path
-              d="M 273 44 Q 262 94 220 116 L 142 176 Q 122 220 162 276"
-              fill="none"
-              stroke={
-                selected === 'right-optic-nerve' ||
-                selected === 'optic-chiasm' ||
-                selected === 'left-optic-tract' ||
-                selected === 'left-occipital'
-                  ? '#94A3B8'
-                  : '#D97706'
-              }
-              strokeWidth="3"
-              strokeDasharray={selected !== 'normal' && selected !== 'left-meyer-loop' ? '4 3' : undefined}
-            />
-
-            {/* LGN Landmarks */}
-            <ellipse cx="140" cy="176" rx="14" ry="8" fill="#FEF3C7" stroke="#B45309" strokeWidth="1.4" />
-            <ellipse cx="300" cy="176" rx="14" ry="8" fill="#FEF3C7" stroke="#B45309" strokeWidth="1.4" />
+            {/* Anatomical Eye Laterality Markers */}
+            <text x={465} y={32} textAnchor="middle" className="fill-[#334155] text-[22px] font-bold">
+              LEFT EYE
+            </text>
+            <text x={735} y={32} textAnchor="middle" className="fill-[#334155] text-[22px] font-bold">
+              RIGHT EYE
+            </text>
 
             {/* Clickable Lesion Bars */}
             {[
-              { id: 'right-optic-nerve', x1: 274, y1: 72, x2: 310, y2: 78 },
-              { id: 'optic-chiasm', x1: 220, y1: 102, x2: 220, y2: 128 },
-              { id: 'left-optic-tract', x1: 158, y1: 136, x2: 184, y2: 152 },
-              { id: 'left-meyer-loop', x1: 94, y1: 214, x2: 126, y2: 220 },
-              { id: 'left-occipital', x1: 136, y1: 256, x2: 174, y2: 268 },
+              { id: 'right-optic-nerve', x1: 676, y1: 216, x2: 742, y2: 242 },
+              { id: 'optic-chiasm', x1: 600, y1: 292, x2: 600, y2: 362 },
+              { id: 'left-optic-tract', x1: 500, y1: 405, x2: 552, y2: 444 },
+              { id: 'left-meyer-loop', x1: 372, y1: 572, x2: 422, y2: 606 },
+              { id: 'left-occipital', x1: 482, y1: 794, x2: 548, y2: 836 },
             ].map((bar) => {
               const isAct = selected === bar.id;
               return (
@@ -335,8 +238,17 @@ export function VisualPathwayLab() {
                     y1={bar.y1}
                     x2={bar.x2}
                     y2={bar.y2}
+                    stroke="#FFFFFF"
+                    strokeWidth={isAct ? 22 : 16}
+                    strokeLinecap="round"
+                  />
+                  <line
+                    x1={bar.x1}
+                    y1={bar.y1}
+                    x2={bar.x2}
+                    y2={bar.y2}
                     stroke={isAct ? '#DC2626' : '#0B3A45'}
-                    strokeWidth={isAct ? '6' : '4'}
+                    strokeWidth={isAct ? 14 : 10}
                     strokeLinecap="round"
                   />
                   <line
@@ -345,8 +257,8 @@ export function VisualPathwayLab() {
                     x2={bar.x2}
                     y2={bar.y2}
                     stroke="#FFFFFF"
-                    strokeWidth="1.2"
-                    strokeDasharray="2 2"
+                    strokeWidth={3.5}
+                    strokeDasharray="6 5"
                   />
                 </g>
               );
@@ -359,12 +271,12 @@ export function VisualPathwayLab() {
                 quizMode={quizMode}
                 isRevealed={revealedIds.includes(pin.id)}
                 onReveal={toggleReveal}
-                anchor={pin.x < 180 ? 'end' : pin.x > 250 ? 'start' : 'middle'}
-                dx={pin.x < 180 ? -6 : pin.x > 250 ? 6 : 0}
-                fontSize={8.5}
+                anchor={(pin.labelX ?? pin.x) > 600 ? 'start' : 'end'}
+                fontSize={24}
+                pinRadius={22}
               />
             ))}
-          </svg>
+          </AnnotatedPlate>
         </div>
 
         {/* Perimetry & Clinical Localization Panel */}
@@ -505,11 +417,11 @@ const CORD_SCENARIOS: Record<CordScenario, CordScenarioSpec> = {
 };
 
 const CORD_PINS: DiagramPin[] = [
-  { id: 'gracilis', num: 1, label: 'Dorsal Columns (Gracilis & Cuneatus)', detail: 'Ipsilateral vibration, joint position, fine touch -> crosses in medulla', x: 185, y: 38 },
-  { id: 'drg-pin', num: 2, label: 'Dorsal Root Ganglion (DRG)', detail: 'First-order sensory neuron cell bodies entering dorsal horn', x: 318, y: 66 },
-  { id: 'cst', num: 3, label: 'Lateral Corticospinal Tract', detail: 'Upper motor neurone descending tract (already crossed in medulla)', x: 266, y: 120 },
-  { id: 'st', num: 4, label: 'Anterolateral Spinothalamic Tract', detail: 'Pain & temperature; crossed 1–2 levels via anterior commissure', x: 268, y: 174 },
-  { id: 'ventral-root', num: 5, label: 'Ventral Motor Root (LMN)', detail: 'Alpha motor axons exiting anterior gray horn to skeletal muscle', x: 312, y: 184 },
+  { id: 'gracilis', num: 1, label: 'Dorsal Columns (Gracilis/Cuneatus)', detail: 'Ipsilateral vibration, joint position, fine touch -> crosses in medulla', x: 560, y: 265, labelX: 600, labelY: 112 },
+  { id: 'drg-pin', num: 2, label: 'Dorsal Root Ganglion', detail: 'First-order sensory neuron cell bodies entering dorsal horn', x: 970, y: 385, labelX: 935, labelY: 175 },
+  { id: 'cst', num: 3, label: 'Lat. Corticospinal', detail: 'Upper motor neurone descending tract (already crossed in medulla)', x: 755, y: 405, labelX: 955, labelY: 280 },
+  { id: 'st', num: 4, label: 'Spinothalamic Tract', detail: 'Pain & temperature; crossed 1–2 levels via anterior commissure', x: 760, y: 525, labelX: 920, labelY: 745 },
+  { id: 'ventral-root', num: 5, label: 'Ventral Motor Root (LMN)', detail: 'Alpha motor axons exiting anterior gray horn to skeletal muscle', x: 835, y: 625, labelX: 600, labelY: 805 },
 ];
 
 export function SpinalTractsLab() {
@@ -560,93 +472,61 @@ export function SpinalTractsLab() {
     >
       <div className="grid grid-cols-1 lg:grid-cols-12">
         <div className="lg:col-span-6 p-4 bg-white border-b lg:border-b-0 lg:border-r border-[#DCE3E8] flex flex-col items-center justify-center">
-          <svg
-            viewBox="0 0 370 250"
-            className="w-full max-w-[420px] h-auto select-none"
-            role="img"
-            aria-label="Anatomical spinal cord cross section with dorsal and ventral roots, dorsal root ganglia, butterfly gray matter, and long tracts"
+          <AnnotatedPlate
+            src={spinalCordImg}
+            alt="Anatomical spinal cord cross section with dorsal and ventral roots, dorsal root ganglia, butterfly gray matter, and long tracts"
+            width={1200}
+            height={896}
+            maxWidthClass="max-w-[480px]"
           >
             <MedicalSvgDefs prefix="spc" />
 
-            {/* Bilateral Dorsal Roots + Dorsal Root Ganglia (Osmosis amber style) */}
-            <path d="M 142 74 Q 90 50 42 98" fill="none" stroke="url(#spc-drg-amber)" strokeWidth="10" strokeLinecap="round" />
-            <ellipse cx="80" cy="64" rx="16" ry="9" fill="#FDE68A" stroke="#CA8A04" strokeWidth="1.2" transform="rotate(-18 80 64)" />
-            <path d="M 134 166 Q 88 186 42 106" fill="none" stroke="url(#spc-drg-amber)" strokeWidth="9" strokeLinecap="round" />
-
-            <path d="M 228 74 Q 280 50 328 98" fill="none" stroke="url(#spc-drg-amber)" strokeWidth="10" strokeLinecap="round" />
-            <ellipse cx="290" cy="64" rx="16" ry="9" fill="#FDE68A" stroke="#CA8A04" strokeWidth="1.2" transform="rotate(18 290 64)" />
-            <path d="M 236 166 Q 282 186 328 106" fill="none" stroke="url(#spc-drg-amber)" strokeWidth="9" strokeLinecap="round" />
-
-            {/* Outer Pia / White Matter Oval with Fissures */}
-            <path
-              d="M 185 52 C 130 52 84 82 84 124 C 84 168 128 196 178 196 L 185 178 L 192 196 C 242 196 286 168 286 124 C 286 82 240 52 185 52 Z"
-              fill="url(#spc-white-matter)"
-              stroke="#9F7868"
-              strokeWidth="1.8"
-              filter="url(#spc-soft-shadow)"
-            />
-            {/* Dorsal median sulcus & radial septa */}
-            <line x1="185" y1="52" x2="185" y2="104" stroke="#B68E7E" strokeWidth="1.4" />
-            <path d="M 118 84 L 136 96 M 252 84 L 234 96 M 102 134 L 126 132 M 268 134 L 244 132" stroke="#D7BBAE" strokeWidth="0.9" />
+            {/* Radiological Side Markers */}
+            <text x={38} y={64} className="fill-[#64748B] text-[24px] font-mono font-semibold">
+              PATIENT RIGHT
+            </text>
+            <text x={1162} y={64} textAnchor="end" className="fill-[#64748B] text-[24px] font-mono font-semibold">
+              PATIENT LEFT
+            </text>
 
             {/* Lesion Zone Overlays */}
             {scenario === 'brown-sequard' && (
               <path
-                d="M 185 52 C 130 52 84 82 84 124 C 84 168 128 196 178 196 L 185 178 Z"
+                d="M 600 205 C 460 205 365 290 365 415 C 365 550 450 638 582 642 L 600 572 Z"
                 fill="url(#spc-lesion-hatch)"
                 stroke="#DC2626"
-                strokeWidth="1.6"
+                strokeWidth={5}
+                filter="url(#spc-glow-lesion)"
               />
             )}
             {scenario === 'asa-infarct' && (
               <path
-                d="M 92 126 Q 185 112 278 126 C 276 168 236 196 192 196 L 185 178 L 178 196 C 134 196 94 168 92 126 Z"
+                d="M 372 418 Q 600 380 828 418 C 820 555 728 642 618 642 L 600 572 L 582 642 C 472 642 380 555 372 418 Z"
                 fill="url(#spc-lesion-hatch)"
                 stroke="#DC2626"
-                strokeWidth="1.6"
+                strokeWidth={5}
+                filter="url(#spc-glow-lesion)"
               />
             )}
-
-            {/* Butterfly Gray Matter (H-shaped Horns) */}
-            <path
-              d="M 152 72 Q 165 106 185 106 Q 205 106 218 72 Q 230 78 220 118 Q 238 156 216 172 Q 194 166 192 132 L 178 132 Q 176 166 154 172 Q 132 156 150 118 Q 140 78 152 72 Z"
-              fill="url(#spc-gray-matter)"
-              stroke="#9F6564"
-              strokeWidth="1.4"
-            />
-
-            {/* Dorsal Columns (Fasciculus Gracilis medial + Cuneatus lateral) */}
-            <ellipse cx="176" cy="76" rx="7" ry="15" fill={has('dc-r') ? '#DC2626' : '#0284C7'} fillOpacity="0.82" />
-            <ellipse cx="163" cy="79" rx="6" ry="13" fill={has('dc-r') ? '#DC2626' : '#0EA5E9'} fillOpacity="0.82" />
-            <ellipse cx="194" cy="76" rx="7" ry="15" fill={has('dc-l') ? '#DC2626' : '#0284C7'} fillOpacity="0.82" />
-            <ellipse cx="207" cy="79" rx="6" ry="13" fill={has('dc-l') ? '#DC2626' : '#0EA5E9'} fillOpacity="0.82" />
-
-            {/* Lateral Corticospinal Tracts */}
-            <ellipse cx="122" cy="118" rx="14" ry="12" fill={has('cst-r') ? '#DC2626' : '#4338CA'} fillOpacity="0.82" />
-            <ellipse cx="248" cy="118" rx="14" ry="12" fill={has('cst-l') ? '#DC2626' : '#4338CA'} fillOpacity="0.82" />
-
-            {/* Anterolateral Spinothalamic Tracts + Decussation Line */}
-            <ellipse cx="114" cy="158" rx="16" ry="9" transform="rotate(-24 114 158)" fill={has('st-r') ? '#DC2626' : '#D97706'} fillOpacity="0.85" />
-            <ellipse cx="256" cy="158" rx="16" ry="9" transform="rotate(24 256 158)" fill={has('st-l') ? '#DC2626' : '#D97706'} fillOpacity="0.85" />
-            <path d="M 152 80 Q 170 116 256 158" fill="none" stroke="#D97706" strokeWidth="1.6" strokeDasharray="3 2" />
-
-            {/* Central Canal / Syringomyelia Cavity */}
-            <circle
-              cx="185"
-              cy="120"
-              r={has('central') ? 22 : 4.5}
-              fill={has('central') ? 'url(#spc-lesion-hatch)' : '#FFFFFF'}
-              stroke={has('central') ? '#DC2626' : '#7C5454'}
-              strokeWidth="1.5"
-            />
-
-            {/* Radiological Side Markers */}
-            <text x="16" y="24" className="fill-[#64748B] text-[9px] font-mono font-semibold">
-              PATIENT RIGHT
-            </text>
-            <text x="354" y="24" textAnchor="end" className="fill-[#64748B] text-[9px] font-mono font-semibold">
-              PATIENT LEFT
-            </text>
+            {has('dc-r') && scenario === 'b12-sacd' && (
+              <>
+                <ellipse cx={545} cy={272} rx={58} ry={48} fill="url(#spc-lesion-hatch)" stroke="#DC2626" strokeWidth={4} />
+                <ellipse cx={655} cy={272} rx={58} ry={48} fill="url(#spc-lesion-hatch)" stroke="#DC2626" strokeWidth={4} />
+                <ellipse cx={442} cy={402} rx={48} ry={44} fill="url(#spc-lesion-hatch)" stroke="#DC2626" strokeWidth={4} />
+                <ellipse cx={758} cy={402} rx={48} ry={44} fill="url(#spc-lesion-hatch)" stroke="#DC2626" strokeWidth={4} />
+              </>
+            )}
+            {has('central') && (
+              <circle
+                cx={600}
+                cy={440}
+                r={76}
+                fill="url(#spc-lesion-hatch)"
+                stroke="#DC2626"
+                strokeWidth={5}
+                filter="url(#spc-glow-lesion)"
+              />
+            )}
 
             {CORD_PINS.map((pin) => (
               <PinOrLabel
@@ -655,11 +535,12 @@ export function SpinalTractsLab() {
                 quizMode={quizMode}
                 isRevealed={revealedIds.includes(pin.id)}
                 onReveal={toggleReveal}
-                anchor={pin.x > 220 ? 'start' : 'middle'}
-                fontSize={8.5}
+                anchor={pin.id === 'gracilis' || pin.id === 'ventral-root' ? 'middle' : 'start'}
+                fontSize={24}
+                pinRadius={22}
               />
             ))}
-          </svg>
+          </AnnotatedPlate>
         </div>
 
         <div className="lg:col-span-6 p-4 bg-[#FAFCFD] space-y-3 text-xs">
